@@ -30,17 +30,15 @@ local_conf_header:
     WARN_QA_remove = "host-user-contaminated"
 
     # Add distro features
-    DISTRO_FEATURES_append += "ipv6 systemd sysvinit virtualization ipv6"
+    DISTRO_FEATURES_append += "ipv6 systemd virtualization"
     VIRTUAL-RUNTIME_init_manager = "systemd"
-    DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
+    DISTRO_FEATURES_BACKFILL_CONSIDERED = ""
     VIRTUAL-RUNTIME_initscripts = ""
     
     # Enable read only rootfs
     IMAGE_INSTALL_append += "initscripts-readonly-rootfs-overlay"
 
     # Set users and passwords
-    # To create password for 'test'
-    #    printf "%q" "$(openssl passwd -6 test)"
     INHERIT += "extrausers"
     EXTRA_USERS_PARAMS = " \
         usermod --password \
@@ -56,27 +54,24 @@ local_conf_header:
     #
     # Install zimage, dtb and kernel modules
     #
-    IMAGE_INSTALL_append += "kernel-devicetree kernel-image-zimage kernel-modules"
+    IMAGE_INSTALL_append += "kernel-devicetree kernel-image-zimage kernel-modules jody-w1-driver"
     IMAGE_INSTALL_append += "firmware-wireless-wilink8 kernel-firmware-sdma-imx6q"
 
     # Add additional packages
     IMAGE_INSTALL_append += "openssh mmc-utils solidsense-scripts sudo"
     IMAGE_INSTALL_append += "docker python3-docker-compose u-boot-fw-utils util-linux"
-    IMAGE_INSTALL_append += "init-ifupdown ifupdown dhcp-client"
-    IMAGE_INSTALL_append += "tzdata solidsense-provisioning solidsense-mqtt"
+    IMAGE_INSTALL_append += "dhcp-client tzdata raspap-webgui"
+    IMAGE_INSTALL_append += "tzdata"
 
     # Factory
     IMAGE_INSTALL_append += "empty picocom"
 
     # Temporary additional packages
-    IMAGE_INSTALL_append += "ppp wpa-supplicant wireless-regdb iw hostapd bluez5 bluez5-noinst-tools"
-    IMAGE_INSTALL_append += "nfs-utils modem-gps wirepas-gateway wirepas-gateway-dev dhcp-server bind"
-    IMAGE_INSTALL_append += "kura wireless-tools ble-gateway cronie openvpn openssl-bin"
+    IMAGE_INSTALL_append += "wpa-supplicant wireless-regdb iw hostapd"
+    IMAGE_INSTALL_append += "nfs-utils dhcp-server bind"
+    IMAGE_INSTALL_append += "cronie openvpn openssl-bin"
     #     Debug
     # IMAGE_INSTALL_append += "gdb strace tcpdump"
-    #     Java
-    PREFERRED_PROVIDER_virtual/java-native = "cacao-native"
-    PREFERRED_PROVIDER_virtual/java-initial-native = "cacao-initial-native"
 
     # Mender
     INHERIT += "mender-full"
@@ -87,12 +82,3 @@ local_conf_header:
     MENDER_ARTIFACT_EXTRA_ARGS += "--no-checksum-provide"
 
     # Preferred applications
-    PREFERRED_VERSION_kura = "4.0.0"
-    PREFERRED_VERSION_wirepas-gateway = "1.3.0"
-    PREFERRED_VERSION_wirepas-messaging = "1.2.0"
-    PREFERRED_VERSION_python3-grpcio = "1.22.0"
-    PREFERRED_VERSION_python3-protobuf = "3.9.0"
-    PREFERRED_VERSION_python3-protobuf-native = "3.9.0"
-    PREFERRED_VERSION_python3-pyyaml = "5.1.2"
-    PREFERRED_VERSION_protobuf = "3.9.0"
-    PREFERRED_VERSION_protobuf-native = "3.9.0"
